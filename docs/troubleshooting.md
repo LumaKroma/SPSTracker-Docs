@@ -1,5 +1,7 @@
 # トラブルシューティング
 
+日本語 | [English](en/troubleshooting.md)
+
 ## SPSTrackerメニューが表示されない
 
 - Modular Avatarが導入されているか確認します。

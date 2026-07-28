@@ -1,5 +1,7 @@
 # License information
 
+日本語 | [English translation](LICENSE.en.md)
+
 ## Documentation
 
 Unless otherwise noted, the text and diagrams in this repository are:

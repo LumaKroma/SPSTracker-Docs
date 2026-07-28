@@ -1,5 +1,7 @@
 # ドキュメント索引
 
+日本語 | [English](en/README.md)
+
 ## 最初に読む資料
 
 1. [システム概要](system-overview.md)

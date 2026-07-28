@@ -1,5 +1,7 @@
 # 制約と互換性
 
+日本語 | [English](en/limitations.md)
+
 ## 追従対象
 
 - 追従対象側で、対応するVRCFury SPS Socketが有効になっている必要があります。

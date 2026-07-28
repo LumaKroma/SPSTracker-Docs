@@ -1,5 +1,7 @@
 # 対応アイテム制作ガイド
 
+日本語 | [English](en/integration-guide.md)
+
 対応方法は、アイテムの構造と配布方法に合わせて選択します。
 
 ## 基本方針: 1つのSPSTrackerを共有する

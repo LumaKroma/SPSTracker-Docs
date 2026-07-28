@@ -1,5 +1,7 @@
 # システム概要
 
+日本語 | [English](en/system-overview.md)
+
 SPSTrackerは、アバター上のアイテムを他プレイヤーのVRCFury SPS Socketへ追従させるVRChatアバター向けギミックです。
 
 ## 複数アイテムで共有する設計

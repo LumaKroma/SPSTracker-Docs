@@ -1,5 +1,7 @@
 # ProductAdapter
 
+日本語 | [English](en/product-adapter.md)
+
 ProductAdapterは、既存のModular Avatar対応商品へSPSTrackerの追従機能を追加するためのPrefabです。
 
 ## 収録Prefab

@@ -1,5 +1,7 @@
 # SPSTracker Developer Documentation
 
+日本語 | [English](README.en.md)
+
 SPSTrackerを使用したアイテムや対応ギミックを制作する方向けの技術資料です。
 
 SPSTracker本体はこのリポジトリに含まれません。利用者は[BOOTH商品ページ](https://lumakroma.booth.pm/items/8623609)から別途導入してください。
@@ -59,5 +61,3 @@ SPSTracker本体はこのリポジトリに含まれません。利用者は[BOO
 - [BOOTH商品ページ](https://lumakroma.booth.pm/items/8623609)
 - [画像付き導入手順書](https://docs.google.com/document/d/1uJOBLdxwRoDBxQUnmw-w6q-cMbQ8GVmhe8odOjaHqkc/edit?tab=t.0#heading=h.24aznar30yba)
 - [問い合わせ先（BOOTH）](https://lumakroma.booth.pm/)
-
-Documentation is currently provided in Japanese.

@@ -1,5 +1,7 @@
 # 公開API・パラメータ
 
+日本語 | [English](en/public-api.md)
+
 このページに記載されたAnchorとパラメータだけを、対応アイテムから利用する公開APIとして扱ってください。記載されていない階層、パラメータ、Animator、Animation、Constraintなどは互換性の保証対象ではなく、バージョン更新によって変更される場合があります。
 
 ## Transform API
