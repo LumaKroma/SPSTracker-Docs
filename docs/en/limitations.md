@@ -6,7 +6,7 @@
 
 - A compatible VRCFury SPS Socket must be enabled on the target avatar.
 - SPSTracker follows position, yaw, and pitch.
-- It does not follow roll around the Socket axis.
+- The SPSTracker core does not follow roll around the Socket axis. The optional ProductAdapter [Roll Deformation](roll-deformation.md) feature is required.
 
 ## Multiple Sockets
 
@@ -39,6 +39,18 @@ ProductAdapter controls the position and rotation of its Target Transform with a
 - Some PhysBone configurations
 
 If a conflict occurs, add a dedicated movable root or switch the controlling system according to the tracking state.
+
+## Roll Deformation
+
+- Requires VRCFury 1.1403.0 or newer. If it is missing or too old, Roll Deformation is omitted and the remaining avatar build continues.
+- Independent operation officially supports standard lilToon shaders from lilToon 1.3.7 or newer. If lilToon is missing or too old, Roll Deformation components that include independent operation are omitted.
+- The lilToon minimum-version requirement does not apply to Roll Deformation components that exclusively share SPS Plug resolvers.
+- The independent Roll resolver and SPSTracker core resolve Sockets separately, so they may select different Sockets when several are close together.
+- Socket Up has no universal convention across avatars. Some Sockets require Runtime Offset correction.
+- It rigidly rotates Renderer vertices in the shader and does not rotate Transforms, Colliders, PhysBones, or Constraints.
+- A Renderer cannot be controlled by more than one Roll Deformation component.
+
+See [Roll Deformation](roll-deformation.md) for details.
 
 ## Support Scope
 

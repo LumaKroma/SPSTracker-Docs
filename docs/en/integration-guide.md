@@ -17,7 +17,7 @@ If the existing public API does not provide a switch or state value required by 
 | Method | Best For | Notes |
 | --- | --- | --- |
 | Place directly under `VisibleRoot` | Simple personal-use models | Not suitable for products with existing gimmicks |
-| ProductAdapter | Existing Modular Avatar-compatible products | May conflict with existing position controls |
+| ProductAdapter | Existing Modular Avatar-compatible products | Uses Setup Assistant; may conflict with existing position controls |
 | Custom add-on using the public API | Dedicated compatibility Prefabs for sale or distribution | Requires Animator and Constraint design |
 
 ## Adding a Custom Model Directly
@@ -46,6 +46,8 @@ See [ProductAdapter](product-adapter.md) when adding tracking support to an exis
 
 In particular, if the product supports hand switching, World Lock, or multiple attachment positions, design the setup so that multiple systems do not control the same Target Transform at the same time.
 
+If roll around the Socket axis is required, configure the optional [Roll Deformation](roll-deformation.md) through ProductAdapter Setup Assistant.
+
 ## Creating a Custom Add-on
 
 An independent add-on Prefab retrieves SPSTracker's public Anchors and connects them to a VRC Parent Constraint on the item side.
@@ -67,6 +69,7 @@ YourAddon
 - Connect the Tracked side to `SPSTracker/API/TrackedAnchor`.
 - Connect Held and Tracked to a VRC Parent Constraint whose Target is Item Root.
 - Switch between the Held and Tracked connection points according to `LumaKroma/ST/TrackingStart`.
+- If users should be able to temporarily prevent tracking, also include `LumaKroma/ST/TrackingEnabled` in the switching conditions.
 - Do not reference SPSTracker elements that are not documented in the [public API](public-api.md).
 - Multiple add-ons should continue to share the public API of the same SPSTracker.
 
@@ -83,5 +86,8 @@ See [Public API and Parameters](public-api.md) for the exact API names.
 - [ ] The item returns to Held after the tracking-loss grace period expires
 - [ ] Operation has been checked with Nearest Lock both ON and OFF
 - [ ] Multiple Constraints do not control the same Target Transform
+- [ ] A Tracking menu does not register duplicate copies of `LumaKroma/ST/TrackingEnabled`
+- [ ] When Roll Deformation is used, the supported shader, Roll Axis, and Runtime Offset have been checked
+- [ ] No Renderer is assigned to more than one Roll Deformation component
 - [ ] The applicable license is included with redistributed files
 - [ ] Drag-and-drop installation has been tested in a new avatar project

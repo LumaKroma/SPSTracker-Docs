@@ -13,6 +13,7 @@
 ### 既存商品へ対応を追加したい
 
 - [ProductAdapter](product-adapter.md)
+- [Roll Deformation](roll-deformation.md)
 - [対応アイテム制作ガイド](integration-guide.md)
 - [制約と互換性](limitations.md)
 
@@ -33,6 +34,7 @@
 | [システム概要](system-overview.md) | 利用方針、追従仕様、パフォーマンス目安 |
 | [公開API・パラメータ](public-api.md) | Anchor、メニュー操作、追従状態 |
 | [ProductAdapter](product-adapter.md) | Prefab構成、調整方法、再配布時の注意 |
+| [Roll Deformation](roll-deformation.md) | Socket軸回りのRoll追従、設定方法、対応シェーダー |
 | [対応アイテム制作ガイド](integration-guide.md) | 直接配置、Adapter、独自アドオンの選択 |
 | [制約と互換性](limitations.md) | 技術的制約、競合しやすい構成、サポート範囲 |
 | [トラブルシューティング](troubleshooting.md) | 症状別の確認項目 |

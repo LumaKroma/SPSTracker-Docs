@@ -22,11 +22,13 @@ Custom implementations are not prohibited, but compatible products are encourage
 
 ## Tracking Behavior
 
-When SPSTracker detects an enabled SPS Socket, it tracks the Socket's position, yaw, and pitch. It does not track roll around the Socket axis.
+When SPSTracker detects an enabled SPS Socket, the core system tracks the Socket's position, yaw, and pitch. The optional [SPS Tracker Roll Deformation](roll-deformation.md) feature in ProductAdapter can add roll around the Socket axis to selected Renderers.
 
 - Configure the compatible item's local `+Z` direction as its forward direction while tracking.
-- If the Socket is lost, SPSTracker holds the last position and rotation for approximately 3 seconds while attempting to detect it again.
-- If the Socket is not detected again within approximately 3 seconds, the item returns to its held position.
+- The held-state detection range can be tuned with `HeldRange` inside the FX Animator. After tracking starts, the detection range is adjusted automatically so it does not become smaller than the held range.
+- SPSTracker compensates for effective Gain differences caused by the detection range, keeping the tracking response relatively consistent as the range changes.
+- If the Socket is lost, SPSTracker holds the last position and rotation for approximately 3 seconds. During that period, it expands the recovery range progressively to its maximum over approximately 1 second.
+- If the Socket is detected again during the grace period, tracking continues and the detection range returns gradually to its normal value. Otherwise, the item returns to its held position after approximately 3 seconds.
 
 Compatible items can read the tracking state from `LumaKroma/ST/TrackingStart`. See [Public API and Parameters](public-api.md) for details.
 
@@ -52,7 +54,7 @@ It does not obtain a unique identifier for the target Socket and therefore canno
 
 ## Performance Estimates
 
-The basic configuration of SPSTracker v1.0.0 has the following estimated cost:
+The basic configuration of SPSTracker v1.1.0 has the following estimated cost:
 
 | Item | Estimate |
 | --- | ---: |
@@ -61,4 +63,8 @@ The basic configuration of SPSTracker v1.0.0 has the following estimated cost:
 | Animator Layer | 6 |
 | Expressions Parameter | 4 parameters, 11 bits |
 
-Each ProductAdapter adds one VRC Parent Constraint and one Animator Layer. It does not add Contacts, Expressions Parameters, or rendered polygons.
+Each ProductAdapter adds one VRC Parent Constraint and one Animator Layer. ProductAdapter itself does not add Contacts, Expressions Parameters, or rendered polygons.
+
+The optional `SPSTracker_TrackingMenuItem.prefab` adds one synchronized Bool Parameter (1 bit). Multiple ProductAdapters can share this parameter.
+
+Independent Roll Deformation generates one resolver MeshRenderer with 3 vertices and 1 triangle per component. It also generates two FX Animator Layers and four internal Animator Parameters shared by all independent Roll Deformation components on the avatar. These internal parameters are not registered in Expressions Parameters. Runtime Offset adds one FX Animator Layer for each unique parameter name. When Roll Deformation targets the same Renderer as an SPS Plug, it shares the Plug resolver and does not generate an independent resolver for that Renderer.

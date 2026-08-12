@@ -11,6 +11,7 @@ SPSTracker本体はこのリポジトリに含まれません。利用者は[BOO
 - 任意のモデルをSPSTrackerへ組み込む
 - 既存のModular Avatar対応商品をProductAdapterへ接続する
 - 公開Anchorと状態パラメータを使用して対応アイテムを制作する
+- ProductAdapterへSocket軸回りのRoll追従を追加する
 - ProductAdapter関連ファイルをMIT Licenseの条件で商品へ同梱する
 
 > [!IMPORTANT]
@@ -24,18 +25,21 @@ SPSTracker本体はこのリポジトリに含まれません。利用者は[BOO
 - [システム概要](docs/system-overview.md)
 - [公開API・パラメータ](docs/public-api.md)
 - [ProductAdapter](docs/product-adapter.md)
+- [Roll Deformation](docs/roll-deformation.md)
 - [対応アイテム制作ガイド](docs/integration-guide.md)
 - [制約と互換性](docs/limitations.md)
 - [トラブルシューティング](docs/troubleshooting.md)
 
 ## 対応バージョン
 
-本資料の初版はSPSTracker `v1.0.0`を基準としています。
+本資料はSPSTracker `v1.1.0`を基準としています。
 
 - Unity 2022.3.22f1
 - VRChat SDK - Avatars
 - Modular Avatar
 - VRChat Constraints
+- VRCFury 1.1403.0以降（Roll Deformation使用時）
+- lilToon 1.3.7以降（独立Roll Deformation使用時）
 
 個別に動作確認したパッケージバージョンは、購入者向け導入手順書を参照してください。
 

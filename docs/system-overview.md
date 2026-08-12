@@ -22,11 +22,13 @@ SPSTrackerは基本構成だけで6個、Nearest Lock使用時には7個のConta
 
 ## 追従仕様
 
-SPSTrackerは、有効なSPS Socketを検出すると、位置・ヨー方向・ピッチ方向へ追従します。Socket軸回りのロール回転には追従しません。
+SPSTracker本体は、有効なSPS Socketを検出すると、位置・ヨー方向・ピッチ方向へ追従します。Socket軸回りのロール回転は、ProductAdapterの任意機能である[SPS Tracker Roll Deformation](roll-deformation.md)からRendererへ追加できます。
 
 - 対応アイテムは、ローカル`+Z`方向を追従時の正面として設定します。
-- Socketの検出を失った場合は、最後の位置と回転で約3秒待機し、再検出を試みます。
-- 約3秒以内に再検出できなかった場合は、保持位置へ戻ります。
+- 保持中の検知範囲はFX Animator内の`HeldRange`で調整できます。追従成立後の検知範囲は、保持中より小さくならないよう自動調整されます。
+- 検知範囲による実効Gainの差は自動補正され、範囲を変更しても追従感が大きく変わりにくい構成です。
+- Socketの検出を失った場合は、最後の位置と回転で約3秒待機します。その間、約1秒かけて再検知範囲を最大まで広げます。
+- 待機中に再検出した場合は追従を継続し、検知範囲を徐々に通常値へ戻します。約3秒以内に再検出できなかった場合は保持位置へ戻ります。
 
 対応アイテムは、追従状態を`LumaKroma/ST/TrackingStart`から読み取れます。詳しくは[公開API・パラメータ](public-api.md)を参照してください。
 
@@ -52,7 +54,7 @@ Nearest Lockは、同じ検知範囲に複数のSocketがある場合に、追�
 
 ## パフォーマンス目安
 
-SPSTracker v1.0.0の基本構成は次のとおりです。
+SPSTracker v1.1.0の基本構成は次のとおりです。
 
 | 項目 | 目安 |
 | --- | ---: |
@@ -61,4 +63,8 @@ SPSTracker v1.0.0の基本構成は次のとおりです。
 | Animator Layer | 6 |
 | Expressions Parameter | 4個・11 bit |
 
-ProductAdapter 1個につき、VRC Parent ConstraintとAnimator Layerが各1個追加されます。Contact、Expressions Parameter、描画ポリゴンは追加されません。
+ProductAdapter 1個につき、VRC Parent ConstraintとAnimator Layerが各1個追加されます。ProductAdapter本体はContact、Expressions Parameter、描画ポリゴンを追加しません。
+
+任意の`SPSTracker_TrackingMenuItem.prefab`を使用すると、同期Bool Parameterが1個（1 bit）追加されます。このパラメータは複数のProductAdapterから共有できます。
+
+独立動作のRoll Deformationは、コンポーネントごとに3 vertices / 1 triangleのResolver用MeshRendererを1個生成します。また、独立動作するRoll Deformation全体で共有するFX Animator Layerを2個と、Expressions Parametersへ登録されない内部Animator Parameterを4個生成します。Runtime Offsetを使用する場合は、異なるParameter名ごとにFX Animator Layerが1個追加されます。SPS Plugと同じRendererへ適用する場合は、Plug側のResolverを共有するため独立Resolverは生成されません。

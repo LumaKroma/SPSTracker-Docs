@@ -13,7 +13,7 @@
 
 - Turn `Activate` ON in the SPSTracker menu.
 - Confirm that a compatible SPS Socket is enabled on the other avatar.
-- Move the item within approximately 10 cm of the Socket Front.
+- Move the Socket Front inside the blue detection range shown by `Show Gizmo`.
 - Turn `Nearest Lock` OFF temporarily and test again.
 - Reload the avatar and test again.
 - Turn `Show Gizmo` ON and check the detection range and direction.
@@ -31,6 +31,8 @@ Confirm that the item's local `+Z` direction is configured as its forward direct
 
 SPSTracker may have been unable to detect the Socket again for approximately 3 seconds.
 
+After tracking is lost, SPSTracker expands the detection range to its maximum over approximately 1 second while attempting to reacquire the Socket. If reacquisition succeeds, tracking continues and the range returns gradually to its normal value.
+
 - Rapid Socket movement
 - Different avatar scales
 - Many overlapping Contacts
@@ -40,11 +42,36 @@ SPSTracker may have been unable to detect the Socket again for approximately 3 s
 
 ## The Product Does Not Move with ProductAdapter
 
-- Confirm that `Target Transform` is assigned on the `Tracking Driver`.
-- Assign a root Transform that can move the entire product.
+- Assign Product Root in `ProductAdapter Setup Assistant`, then run `Initialize / Repair Setup`.
+- If the `Tracking` menu was added, turn it ON.
+- ProductAdapter switches to Tracked Pose only while both `LumaKroma/ST/TrackingStart` and `LumaKroma/ST/TrackingEnabled` are ON.
 - Confirm that no other Constraint, Animator, or PhysBone controls the same Transform.
 - Confirm that `Held API Anchor (DO NOT EDIT)` and `Tracked API Anchor (DO NOT EDIT)` have not been edited.
-- After adjustment, confirm that the Held-side Weight is 1 and the Tracked-side Weight is 0.
+- Resolve warnings and errors shown by Setup Assistant validation.
+
+## Roll Tracking Does Not Work
+
+- Confirm that VRCFury is version 1.1403.0 or newer.
+- For independent operation, confirm that lilToon is version 1.3.7 or newer. If a dependency is missing or too old, a warning is shown and only the affected Roll Deformation is omitted from the build.
+- Confirm that `SPS Tracker Roll Deformation` is enabled and the target Renderer is listed in Target Renderers.
+- For automatic setup, enable `Auto Configure Roll` and run Initialize or Complete Setup.
+- For independent operation, confirm that the source Material uses a standard lilToon shader.
+- Check the Unity Console for Roll Deformation build errors.
+
+## Roll Has the Wrong Orientation
+
+- Confirm that Roll Axis `+Z` points toward the Socket and `+Y` defines roll up.
+- Automatic setup uses the Tracked guide `+Z` and world `+Y` as its reference.
+- Socket Up is not standardized across avatars, so correct it with Runtime Offset.
+- If the same Renderer uses an SPS Plug, check the Plug axis instead of the Roll Deformation axis.
+
+## Roll Deformation Changes the Appearance
+
+Independent operation officially supports standard lilToon shaders from lilToon 1.3.7 or newer. A custom shader or shader derived from lilToon may not preserve its original rendering. If lilToon itself is missing or too old, Roll Deformation components that include independent operation are omitted from the build.
+
+- Confirm that the source Material uses a standard lilToon shader.
+- Edit the source Material, not the generated build Material.
+- Normals rotate with the mesh, so changes in world-direction-dependent lighting or MatCap effects may be expected.
 
 ## Hand Switching or World Lock Does Not Work
 

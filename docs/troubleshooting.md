@@ -13,7 +13,7 @@
 
 - SPSTrackerメニューの`Activate`をONにします。
 - 相手側で対応するSPS Socketが有効か確認します。
-- アイテムをSocket Frontから約10cm以内へ近づけます。
+- `Show Gizmo`で表示される青い検知範囲の内側へ、Socket Frontを近づけます。
 - `Nearest Lock`を一度OFFにして確認します。
 - アバターをリロードして確認します。
 - `Show Gizmo`をONにして検知範囲と向きを確認します。
@@ -31,6 +31,8 @@
 
 Socketを約3秒間再検出できなかった可能性があります。
 
+追従ロスト後は、約1秒かけて検知範囲を最大まで広げながら再検出を試みます。再検出した場合は追従を継続し、検知範囲は徐々に通常値へ戻ります。
+
 - Socketの急な移動
 - アバタースケールの違い
 - 多数のContactの重なり
@@ -40,11 +42,36 @@ Socketを約3秒間再検出できなかった可能性があります。
 
 ## ProductAdapterで商品が動かない
 
-- `Tracking Driver`の`Target Transform`が設定されているか確認します。
-- 商品全体を動かせるルートTransformを指定します。
+- `ProductAdapter Setup Assistant`で商品ルートを指定し、`初期設定・参照を修復`を実行します。
+- `Tracking`メニューを追加した場合はONにします。
+- `LumaKroma/ST/TrackingStart`と`LumaKroma/ST/TrackingEnabled`が両方ONのときだけTracked Poseへ切り替わります。
 - 同じTransformを別のConstraint、Animator、PhysBoneが制御していないか確認します。
 - `Held API Anchor (DO NOT EDIT)`と`Tracked API Anchor (DO NOT EDIT)`を編集していないか確認します。
-- 調整後にHeld側のWeightを1、Tracked側を0へ戻したか確認します。
+- Setup Assistantの検証に表示される警告とエラーを解消します。
+
+## Roll追従が動かない
+
+- VRCFuryが1.1403.0以降か確認します。
+- 独立動作ではlilToonが1.3.7以降か確認します。依存が未導入または古い場合は警告が表示され、対象のRoll Deformationだけがビルドから除外されます。
+- `SPS Tracker Roll Deformation`が有効で、Target Renderersに対象Rendererが含まれているか確認します。
+- 自動設定の場合は`Rollを自動設定`をONにして、`初期設定・参照を修復`または完了操作を実行します。
+- 独立動作では、対象Materialが標準lilToonシェーダーを使用しているか確認します。
+- Unity ConsoleにRoll Deformationのビルドエラーがないか確認します。
+
+## Rollの向きがずれる
+
+- Roll Axisの`+Z`がSocket方向、`+Y`がロールの上方向か確認します。
+- 自動設定ではTrackedガイドの`+Z`とワールド`+Y`が基準です。
+- Socket Upはアバター間で統一されていないため、Runtime Offsetで補正します。
+- 同じRendererにSPS Plugがある場合は、Roll DeformationではなくPlug側の軸設定を確認します。
+
+## Roll Deformationで見た目が変わる
+
+独立動作で正式対応するのはlilToon 1.3.7以降の標準lilToonシェーダーです。独自シェーダーやlilToon派生シェーダーでは、元の描画を維持できない場合があります。lilToon自体が未導入または古い場合は、独立動作を含むRoll Deformationがビルドから除外されます。
+
+- 元Materialが標準lilToonか確認します。
+- ビルド後に生成されたMaterialではなく、元Material側の設定を修正します。
+- ロールによって法線も回転するため、ワールド方向へ依存するライティングやMatCapの変化は正常な場合があります。
 
 ## 左右持ち替え・ワールド固定が動作しない
 

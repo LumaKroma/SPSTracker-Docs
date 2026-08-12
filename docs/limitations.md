@@ -6,7 +6,7 @@
 
 - 追従対象側で、対応するVRCFury SPS Socketが有効になっている必要があります。
 - 位置・ヨー方向・ピッチ方向へ追従します。
-- Socket軸回りのロール回転には追従しません。
+- SPSTracker本体だけではSocket軸回りのロール回転へ追従しません。ProductAdapterの任意機能である[Roll Deformation](roll-deformation.md)が必要です。
 
 ## 複数Socket
 
@@ -39,6 +39,18 @@ ProductAdapterはTarget Transformの位置と回転をVRC Parent Constraintで�
 - 一部のPhysBone構成
 
 競合する場合は、専用の可動ルートを追加するか、追従状態に応じて制御元を切り替えてください。
+
+## Roll Deformation
+
+- VRCFury 1.1403.0以降が必要です。未導入または古い場合はRoll Deformationをビルド対象から除外し、残りのアバタービルドを続行します。
+- 独立動作で正式対応するシェーダーはlilToon 1.3.7以降の標準lilToonです。未導入または古い場合は、独立動作を含むRoll Deformationをビルド対象から除外します。
+- SPS Plug共有だけで動作するRoll DeformationにはlilToonの最低バージョン要件を適用しません。
+- 独立Roll ResolverとSPSTracker本体はSocketを個別に解決するため、複数Socketが近接すると異なるSocketを選ぶ可能性があります。
+- Socket Upにはアバター間の共通規格がありません。SocketによってはRuntime Offsetによる補正が必要です。
+- Rendererの頂点をシェーダーで剛体回転させるため、Transform、Collider、PhysBone、Constraintは回転しません。
+- 同じRendererを複数のRoll Deformationコンポーネントから制御できません。
+
+詳しくは[Roll Deformation](roll-deformation.md)を参照してください。
 
 ## サポート範囲
 

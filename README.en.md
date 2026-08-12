@@ -11,6 +11,7 @@ SPSTracker itself is not included in this repository. Users must obtain it separ
 - Add a custom model to SPSTracker
 - Connect an existing Modular Avatar-compatible product through ProductAdapter
 - Create compatible items using the public Anchors and tracking-state parameter
+- Add roll tracking around the Socket axis through ProductAdapter
 - Include ProductAdapter-related files with a product under the terms of the MIT License
 
 > [!IMPORTANT]
@@ -24,18 +25,21 @@ For end-user installation instructions, see the [illustrated installation guide 
 - [System Overview](docs/en/system-overview.md)
 - [Public API and Parameters](docs/en/public-api.md)
 - [ProductAdapter](docs/en/product-adapter.md)
+- [Roll Deformation](docs/en/roll-deformation.md)
 - [Compatible Item Integration Guide](docs/en/integration-guide.md)
 - [Limitations and Compatibility](docs/en/limitations.md)
 - [Troubleshooting](docs/en/troubleshooting.md)
 
 ## Supported Versions
 
-The initial version of this documentation is based on SPSTracker `v1.0.0`.
+This documentation is based on SPSTracker `v1.1.0`.
 
 - Unity 2022.3.22f1
 - VRChat SDK - Avatars
 - Modular Avatar
 - VRChat Constraints
+- VRCFury 1.1403.0 or newer (when using Roll Deformation)
+- lilToon 1.3.7 or newer (for independent Roll Deformation)
 
 See the end-user installation guide for the package versions that have been tested individually.
 

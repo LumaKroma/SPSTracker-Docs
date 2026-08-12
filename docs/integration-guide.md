@@ -17,7 +17,7 @@
 | 方法 | 向いている用途 | 注意点 |
 | --- | --- | --- |
 | `VisibleRoot`へ直接配置 | 自分用の単純なモデル | 既存ギミックを持つ商品には不向き |
-| ProductAdapter | 既存のModular Avatar対応商品 | 既存の位置制御と競合する場合がある |
+| ProductAdapter | 既存のModular Avatar対応商品 | Setup Assistantを使用。既存の位置制御と競合する場合がある |
 | 公開APIを使った独自アドオン | 販売・配布する専用対応Prefab | AnimatorとConstraintの設計が必要 |
 
 ## 任意のモデルを直接追加する
@@ -46,6 +46,8 @@ SPSTracker
 
 特に、商品が左右持ち替え・ワールド固定・複数箇所への装着機能を持つ場合は、Target Transformを複数の仕組みが同時に制御しないように設計してください。
 
+Socket軸回りのロール追従が必要な場合は、ProductAdapter Setup Assistantから任意の[Roll Deformation](roll-deformation.md)を設定できます。
+
 ## 独自アドオンを制作する
 
 独立したアドオンPrefabは、SPSTrackerの公開Anchorを取得して、アイテム側のVRC Parent Constraintへ接続します。
@@ -67,6 +69,7 @@ YourAddon
 - Tracked側を`SPSTracker/API/TrackedAnchor`へ接続します。
 - Item RootをTargetとするVRC Parent Constraintへ、HeldとTrackedの2つを接続します。
 - `LumaKroma/ST/TrackingStart`に応じて、HeldとTrackedの接続先を切り替えます。
+- 利用者が追従を一時的に禁止できるようにする場合は、`LumaKroma/ST/TrackingEnabled`も切り替え条件へ追加します。
 - [公開API](public-api.md)に記載されていないSPSTrackerの要素は参照しません。
 - 複数のアドオンを導入する場合も、同じSPSTrackerの公開APIを共有します。
 
@@ -83,5 +86,8 @@ YourAddon
 - [ ] Trackingロスト待機からHeld状態へ戻ることを確認した
 - [ ] Nearest LockのON/OFFで動作を確認した
 - [ ] 同じTarget Transformを複数のConstraintが制御していない
+- [ ] Trackingメニューを付ける場合、`LumaKroma/ST/TrackingEnabled`を重複登録していない
+- [ ] Roll Deformationを使用する場合、対応シェーダー、Roll Axis、Runtime Offsetを確認した
+- [ ] Roll対象のRendererを複数のRoll Deformationへ重複登録していない
 - [ ] 再配布するファイルのライセンスを同梱した
 - [ ] 新規アバタープロジェクトへのD&D導入を確認した

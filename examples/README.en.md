@@ -7,7 +7,8 @@ Examples and redistributable helper files for creators of compatible items will 
 ## Planned Content
 
 - A minimal example connected to the public Anchors
-- A state-switching example using `LumaKroma/ST/TrackingStart`
+- A state-switching example using `LumaKroma/ST/TrackingStart` and `TrackingEnabled`
 - A ProductAdapter modification example
+- A minimal Roll Deformation setup example
 
 The applicable license will be stated for each sample or containing directory. SPSTracker itself and LumaToys from the commercial product will not be included in this repository.
