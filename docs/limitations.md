@@ -2,6 +2,10 @@
 
 日本語 | [English](en/limitations.md)
 
+## 対応プラットフォーム
+
+SPSTracker、ProductAdapter、Roll DeformationはWindows PC版VRChat専用です。Android / Quest版アバターはサポート対象外です。
+
 ## 追従対象
 
 - 追従対象側で、対応するVRCFury SPS Socketが有効になっている必要があります。
@@ -35,10 +39,12 @@ ProductAdapterはTarget Transformの位置と回転をVRC Parent Constraintで�
 
 - 別のParent ConstraintまたはPosition Constraint
 - Transformを変更するAnimator
-- 左右持ち替えやワールド固定
+- 左右持ち替えや、ProductAdapter以外が実装するワールド固定
 - 一部のPhysBone構成
 
 競合する場合は、専用の可動ルートを追加するか、追従状態に応じて制御元を切り替えてください。
+
+v1.2 Menu Variantの`World Fixed`はProductAdapter自身の`Tracking Driver`だけを固定します。商品の既存ワールド固定や持ち替え機構を自動統合するものではありません。
 
 ## Roll Deformation
 
@@ -49,6 +55,7 @@ ProductAdapterはTarget Transformの位置と回転をVRC Parent Constraintで�
 - Socket Upにはアバター間の共通規格がありません。SocketによってはRuntime Offsetによる補正が必要です。
 - Rendererの頂点をシェーダーで剛体回転させるため、Transform、Collider、PhysBone、Constraintは回転しません。
 - 同じRendererを複数のRoll Deformationコンポーネントから制御できません。
+- Socket frameの位置・軸がゼロ、NaN、Infinity、または退化して解決できない場合は、そのframeの頂点・法線・接線を変更せず処理をスキップします。無効な設定を自動修復する機能ではありません。
 
 詳しくは[Roll Deformation](roll-deformation.md)を参照してください。
 

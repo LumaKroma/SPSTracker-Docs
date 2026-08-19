@@ -69,7 +69,7 @@ YourAddon
 - Tracked側を`SPSTracker/API/TrackedAnchor`へ接続します。
 - Item RootをTargetとするVRC Parent Constraintへ、HeldとTrackedの2つを接続します。
 - `LumaKroma/ST/TrackingStart`に応じて、HeldとTrackedの接続先を切り替えます。
-- 利用者が追従を一時的に禁止できるようにする場合は、`LumaKroma/ST/TrackingEnabled`も切り替え条件へ追加します。
+- 利用者が商品ごとに追従を禁止できるようにする場合は、ProductAdapter Menu Variantと同様に、アドオン自身のMA Parameter remapスコープ内へBoolを定義します。ProductAdapter内部Parameterの最終名へ外部から依存しません。
 - [公開API](public-api.md)に記載されていないSPSTrackerの要素は参照しません。
 - 複数のアドオンを導入する場合も、同じSPSTrackerの公開APIを共有します。
 
@@ -86,7 +86,10 @@ YourAddon
 - [ ] Trackingロスト待機からHeld状態へ戻ることを確認した
 - [ ] Nearest LockのON/OFFで動作を確認した
 - [ ] 同じTarget Transformを複数のConstraintが制御していない
-- [ ] Trackingメニューを付ける場合、`LumaKroma/ST/TrackingEnabled`を重複登録していない
+- [ ] 商品ごとのTrackingメニューは、他インスタンスとParameterを共有しないMA remapスコープ内にある
+- [ ] ProductAdapterの`Menu`階層と内部Parameter名を変更していない
+- [ ] Setup Assistantで`設定を完了してHeldへ戻す`を実行してからPlay / Buildした
+- [ ] Windows PC版VRChatを対象としている
 - [ ] Roll Deformationを使用する場合、対応シェーダー、Roll Axis、Runtime Offsetを確認した
 - [ ] Roll対象のRendererを複数のRoll Deformationへ重複登録していない
 - [ ] 再配布するファイルのライセンスを同梱した

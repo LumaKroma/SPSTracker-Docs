@@ -43,11 +43,21 @@ Socketを約3秒間再検出できなかった可能性があります。
 ## ProductAdapterで商品が動かない
 
 - `ProductAdapter Setup Assistant`で商品ルートを指定し、`初期設定・参照を修復`を実行します。
-- `Tracking`メニューを追加した場合はONにします。
-- `LumaKroma/ST/TrackingStart`と`LumaKroma/ST/TrackingEnabled`が両方ONのときだけTracked Poseへ切り替わります。
+- Menu Variantを使用している場合は`Tracking`をONにします。
+- Base Prefabは`TrackingStart`成立時に自動で切り替わります。Menu Variantは`TrackingStart`成立かつ`Tracking` ONのときだけ切り替わります。
 - 同じTransformを別のConstraint、Animator、PhysBoneが制御していないか確認します。
 - `Held API Anchor (DO NOT EDIT)`と`Tracked API Anchor (DO NOT EDIT)`を編集していないか確認します。
 - Setup Assistantの検証に表示される警告とエラーを解消します。
+
+## ProductAdapterを含むPlay / Buildが停止する
+
+- Setup Assistantで`設定を完了してHeldへ戻す`を実行します。
+- `Held編集中`または`Tracked編集中`の表示が残っていないことを確認します。
+- 商品ルート、Tracking Driver、Held / Tracked Poseの参照を修復します。
+
+## v1.1から更新後にTrackingメニューが重複する
+
+UnityPackageは廃止済みの`SPSTracker_TrackingMenuItem.prefab`を自動削除しません。HierarchyとProjectから旧Prefabを削除し、必要に応じて`SPSTracker_ProductAdapterMenu.prefab`へ置き換えてください。
 
 ## Roll追従が動かない
 
@@ -79,6 +89,7 @@ ProductAdapterの標準構成は、追従していない間もHeld Poseから商
 
 - 既存機能を使わない場合: 商品側の位置制御を無効化し、Held Poseを調整します。
 - 既存機能を残す場合: `LumaKroma/ST/TrackingStart`に応じて制御元を切り替える商品固有のAnimator改変が必要です。
+- Menu Variantの`World Fixed`を使う場合: ProductAdapterの`Tracking Driver`だけが固定されます。商品側の別ワールド固定と同時に同じTransformを制御しないでください。
 
 ## 問い合わせ時に用意する情報
 

@@ -2,6 +2,10 @@
 
 [日本語](../limitations.md) | English
 
+## Supported Platform
+
+SPSTracker, ProductAdapter, and Roll Deformation target VRChat on Windows PC. Android / Quest avatars are not supported.
+
 ## Tracking Target
 
 - A compatible VRCFury SPS Socket must be enabled on the target avatar.
@@ -35,10 +39,12 @@ ProductAdapter controls the position and rotation of its Target Transform with a
 
 - Another Parent Constraint or Position Constraint
 - An Animator that changes the Transform
-- Hand switching or World Lock
+- Hand switching or World Lock implemented outside ProductAdapter
 - Some PhysBone configurations
 
 If a conflict occurs, add a dedicated movable root or switch the controlling system according to the tracking state.
+
+The v1.2 Menu Variant's `World Fixed` control freezes only ProductAdapter's own `Tracking Driver`. It does not automatically integrate the product's existing World Lock or hand-switching system.
 
 ## Roll Deformation
 
@@ -49,6 +55,7 @@ If a conflict occurs, add a dedicated movable root or switch the controlling sys
 - Socket Up has no universal convention across avatars. Some Sockets require Runtime Offset correction.
 - It rigidly rotates Renderer vertices in the shader and does not rotate Transforms, Colliders, PhysBones, or Constraints.
 - A Renderer cannot be controlled by more than one Roll Deformation component.
+- If the Socket frame position or axes are zero, NaN, Infinity, degenerate, or otherwise unresolved, that frame is skipped without changing vertex positions, normals, or tangents. This guard does not repair an invalid setup.
 
 See [Roll Deformation](roll-deformation.md) for details.
 

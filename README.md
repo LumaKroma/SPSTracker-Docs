@@ -17,6 +17,9 @@ SPSTracker本体はこのリポジトリに含まれません。利用者は[BOO
 > [!IMPORTANT]
 > SPSTrackerは、1つのアバターに配置した1つのSPSTrackerを複数の対応アイテムで共有し、使用するアイテムを切り替える構成を想定しています。アイテムごとに追従システムを重複して組み込む構成は推奨しません。詳しくは[複数アイテムで共有する設計](docs/system-overview.md#複数アイテムで共有する設計)を参照してください。
 
+> [!NOTE]
+> SPSTrackerとProductAdapterはWindows PC版VRChat向けです。Android / Quest版アバターはサポート対象外です。
+
 購入者向けの導入方法は、[画像付き導入手順書](https://docs.google.com/document/d/1uJOBLdxwRoDBxQUnmw-w6q-cMbQ8GVmhe8odOjaHqkc/edit?tab=t.0#heading=h.24aznar30yba)を参照してください。
 
 ## ドキュメント
@@ -32,7 +35,7 @@ SPSTracker本体はこのリポジトリに含まれません。利用者は[BOO
 
 ## 対応バージョン
 
-本資料はSPSTracker `v1.1.0`を基準としています。
+本資料はSPSTracker `v1.2.0`を基準としています。
 
 - Unity 2022.3.22f1
 - VRChat SDK - Avatars

@@ -7,7 +7,7 @@ Examples and redistributable helper files for creators of compatible items will 
 ## Planned Content
 
 - A minimal example connected to the public Anchors
-- A state-switching example using `LumaKroma/ST/TrackingStart` and `TrackingEnabled`
+- A state-switching example using `LumaKroma/ST/TrackingStart` and a Bool scoped to the add-on instance
 - A ProductAdapter modification example
 - A minimal Roll Deformation setup example
 

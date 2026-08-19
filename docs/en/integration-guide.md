@@ -69,7 +69,7 @@ YourAddon
 - Connect the Tracked side to `SPSTracker/API/TrackedAnchor`.
 - Connect Held and Tracked to a VRC Parent Constraint whose Target is Item Root.
 - Switch between the Held and Tracked connection points according to `LumaKroma/ST/TrackingStart`.
-- If users should be able to temporarily prevent tracking, also include `LumaKroma/ST/TrackingEnabled` in the switching conditions.
+- If users should be able to disable tracking per product, define a Bool inside the add-on's own MA parameter-remap scope, as the ProductAdapter Menu Variant does. Do not depend externally on a ProductAdapter instance's final internal parameter name.
 - Do not reference SPSTracker elements that are not documented in the [public API](public-api.md).
 - Multiple add-ons should continue to share the public API of the same SPSTracker.
 
@@ -86,7 +86,10 @@ See [Public API and Parameters](public-api.md) for the exact API names.
 - [ ] The item returns to Held after the tracking-loss grace period expires
 - [ ] Operation has been checked with Nearest Lock both ON and OFF
 - [ ] Multiple Constraints do not control the same Target Transform
-- [ ] A Tracking menu does not register duplicate copies of `LumaKroma/ST/TrackingEnabled`
+- [ ] A per-product Tracking menu is inside an MA remap scope and does not share its parameter with another instance
+- [ ] ProductAdapter's `Menu` hierarchy and internal parameter names remain unchanged
+- [ ] Setup Assistant was completed and returned to Held before Play / Build
+- [ ] The product targets VRChat on Windows PC
 - [ ] When Roll Deformation is used, the supported shader, Roll Axis, and Runtime Offset have been checked
 - [ ] No Renderer is assigned to more than one Roll Deformation component
 - [ ] The applicable license is included with redistributed files

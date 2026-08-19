@@ -4,6 +4,8 @@
 
 SPSTracker is a VRChat avatar gimmick that makes an item on your avatar track another player's VRCFury SPS Socket.
 
+SPSTracker and ProductAdapter target VRChat on Windows PC. They cannot be used on Android / Quest avatars.
+
 ## Designing for Multiple Items to Share One Tracker
 
 As a general rule, only one SPSTracker should be placed on an avatar. Its tracking result is designed to be shared by multiple compatible items. Each item references the same `HeldAnchor`, `TrackedAnchor`, and `TrackingStart`, while the product's display or selection menu determines which item is in use.
@@ -54,7 +56,7 @@ It does not obtain a unique identifier for the target Socket and therefore canno
 
 ## Performance Estimates
 
-The basic configuration of SPSTracker v1.1.0 has the following estimated cost:
+The basic configuration of SPSTracker v1.2.0 has the following estimated cost:
 
 | Item | Estimate |
 | --- | ---: |
@@ -63,8 +65,10 @@ The basic configuration of SPSTracker v1.1.0 has the following estimated cost:
 | Animator Layer | 6 |
 | Expressions Parameter | 4 parameters, 11 bits |
 
-Each ProductAdapter adds one VRC Parent Constraint and one Animator Layer. ProductAdapter itself does not add Contacts, Expressions Parameters, or rendered polygons.
+Each menu-free ProductAdapter adds one VRC Parent Constraint and two included FX Layers. It adds no Contacts, Expression Parameters, or rendered polygons.
 
-The optional `SPSTracker_TrackingMenuItem.prefab` adds one synchronized Bool Parameter (1 bit). Multiple ProductAdapters can share this parameter.
+The Menu Variant adds three synchronized Bool Parameters (3 bits). `Item Visible`, `Tracking`, and `World Fixed` are independent per ProductAdapter because Modular Avatar automatically renames each instance's final parameters.
+
+After NDMF, Modular Avatar also adds helper layers for MMD compatibility and Object Toggle processing. In a blank-avatar comparison using Unity 2022.3.22f1 and Modular Avatar 1.18.1, the Base ProductAdapter added `+4` FX Layers and the Menu Variant added `+7`. These are reference measurements that include generated helper layers and can vary with the avatar and Modular Avatar version.
 
 Independent Roll Deformation generates one resolver MeshRenderer with 3 vertices and 1 triangle per component. It also generates two FX Animator Layers and four internal Animator Parameters shared by all independent Roll Deformation components on the avatar. These internal parameters are not registered in Expressions Parameters. Runtime Offset adds one FX Animator Layer for each unique parameter name. When Roll Deformation targets the same Renderer as an SPS Plug, it shares the Plug resolver and does not generate an independent resolver for that Renderer.
