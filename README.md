@@ -38,7 +38,7 @@ SPSTracker本体はこのリポジトリに含まれません。利用者は[BOO
 本資料はSPSTracker `v1.2.0`を基準としています。
 
 - Unity 2022.3.22f1
-- VRChat SDK - Avatars
+- VRChat SDK - Base / Avatars 3.10.4以降
 - Modular Avatar
 - VRChat Constraints
 - VRCFury 1.1403.0以降（Roll Deformation使用時）

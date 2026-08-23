@@ -38,7 +38,7 @@ For end-user installation instructions, see the [illustrated installation guide 
 This documentation is based on SPSTracker `v1.2.0`.
 
 - Unity 2022.3.22f1
-- VRChat SDK - Avatars
+- VRChat SDK - Base / Avatars 3.10.4 or newer
 - Modular Avatar
 - VRChat Constraints
 - VRCFury 1.1403.0 or newer (when using Roll Deformation)

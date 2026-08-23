@@ -37,7 +37,6 @@ LumaKroma/ST/
 | `LumaKroma/ST/Activate` | Bool | OFF | Socket検出と追従を切り替える |
 | `LumaKroma/ST/ShowGizmo` | Bool | ON | `Activate`中のローカル矢印と検知範囲を切り替える |
 | `LumaKroma/ST/Offset` | Float | 0.5 | Socket軸方向へ約-10～+10cm調整する（0.5で補正なし） |
-| `LumaKroma/ST/NearestMode` | Bool | OFF | Nearest Lockを切り替える |
 
 アドオンから操作する場合はSPSTrackerが定義した既存Parameterを使用し、同名ParameterをExpressions Parametersへ重複登録しないでください。
 

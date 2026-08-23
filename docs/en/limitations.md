@@ -16,7 +16,7 @@ SPSTracker, ProductAdapter, and Roll Deformation target VRChat on Windows PC. An
 
 When multiple Sockets are within the same detection range, SPSTracker cannot guarantee that every axis will always select the same Socket.
 
-Nearest Lock narrows the detection range after tracking begins to reduce the chance of switching to another Socket. It does not uniquely identify a Socket, so another Socket may still be detected in the following situations:
+It does not uniquely identify a Socket, so another Socket may still be detected in the following situations:
 
 - Multiple Sockets are extremely close together
 - Many Contacts overlap within the same area
@@ -29,7 +29,6 @@ Nearest Lock narrows the detection range after tracking begins to reduce the cha
 - Frame rate
 - Socket configuration
 - Overlapping Contacts
-- Reduced detection range caused by Nearest Lock
 
 Operation is not guaranteed on every avatar, Socket, or World.
 

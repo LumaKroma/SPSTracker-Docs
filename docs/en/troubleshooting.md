@@ -14,7 +14,7 @@
 - Turn `Activate` ON in the SPSTracker menu.
 - Confirm that a compatible SPS Socket is enabled on the other avatar.
 - Move the Socket Front inside the blue detection range shown by `Show Gizmo`.
-- Turn `Nearest Lock` OFF temporarily and test again.
+- Move close to Socket Front and test again.
 - Reload the avatar and test again.
 - Turn `Show Gizmo` ON and check the detection range and direction.
 
@@ -37,7 +37,6 @@ After tracking is lost, SPSTracker expands the detection range to its maximum ov
 - Different avatar scales
 - Many overlapping Contacts
 - Network conditions or frame rate
-- Detection range reduction caused by Nearest Lock
 - The Socket was disabled on the other avatar
 
 ## The Product Does Not Move with ProductAdapter

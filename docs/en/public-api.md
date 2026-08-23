@@ -37,7 +37,6 @@ LumaKroma/ST/
 | `LumaKroma/ST/Activate` | Bool | OFF | Enables Socket detection and tracking |
 | `LumaKroma/ST/ShowGizmo` | Bool | ON | Toggles the local arrow and detection range while `Activate` is on |
 | `LumaKroma/ST/Offset` | Float | 0.5 | Adjusts about -10 to +10 cm along the Socket axis; 0.5 is neutral |
-| `LumaKroma/ST/NearestMode` | Bool | OFF | Toggles Nearest Lock |
 
 Use the parameters already defined by SPSTracker. Do not register duplicate Expression Parameters with the same names.
 

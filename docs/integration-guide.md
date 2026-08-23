@@ -84,7 +84,7 @@ YourAddon
 - [ ] アイテムのローカル`+Z`が追従時の正面になっている
 - [ ] Held状態とTracked状態の両方で位置を確認した
 - [ ] Trackingロスト待機からHeld状態へ戻ることを確認した
-- [ ] Nearest LockのON/OFFで動作を確認した
+- [ ] 追従ロスト後に再探索し、再取得時に通常範囲へ戻ることを確認した
 - [ ] 同じTarget Transformを複数のConstraintが制御していない
 - [ ] 商品ごとのTrackingメニューは、他インスタンスとParameterを共有しないMA remapスコープ内にある
 - [ ] ProductAdapterの`Menu`階層と内部Parameter名を変更していない

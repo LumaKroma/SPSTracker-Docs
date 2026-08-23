@@ -16,7 +16,7 @@ SPSTracker、ProductAdapter、Roll DeformationはWindows PC版VRChat専用です
 
 同じ検知範囲に複数のSocketがある場合、各軸が常に同じSocketを選択することを保証できません。
 
-Nearest Lockは追従成立後の検知範囲を狭め、別Socketへ移りにくくするための補助機能です。Socketを一意に識別する機能ではないため、次の状況では別Socketを検出する可能性があります。
+Socketを一意に識別する機能ではないため、次の状況では別Socketを検出する可能性があります。
 
 - 複数Socketが非常に近い
 - 多数のContactが同じ範囲へ重なっている
@@ -29,7 +29,6 @@ Nearest Lockは追従成立後の検知範囲を狭め、別Socketへ移りに�
 - フレームレート
 - Socketの設定
 - Contactの重なり
-- Nearest Lockによる検知範囲の縮小
 
 すべてのアバター、Socket、Worldでの動作を保証するものではありません。
 

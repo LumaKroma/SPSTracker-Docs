@@ -84,7 +84,7 @@ See [Public API and Parameters](public-api.md) for the exact API names.
 - [ ] The item's local `+Z` direction faces forward while tracking
 - [ ] The item's position has been checked in both Held and Tracked states
 - [ ] The item returns to Held after the tracking-loss grace period expires
-- [ ] Operation has been checked with Nearest Lock both ON and OFF
+- [ ] After tracking loss, progressive reacquisition and the return to normal range after reacquiring have been checked
 - [ ] Multiple Constraints do not control the same Target Transform
 - [ ] A per-product Tracking menu is inside an MA remap scope and does not share its parameter with another instance
 - [ ] ProductAdapter's `Menu` hierarchy and internal parameter names remain unchanged

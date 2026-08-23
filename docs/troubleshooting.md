@@ -14,7 +14,7 @@
 - SPSTrackerメニューの`Activate`をONにします。
 - 相手側で対応するSPS Socketが有効か確認します。
 - `Show Gizmo`で表示される青い検知範囲の内側へ、Socket Frontを近づけます。
-- `Nearest Lock`を一度OFFにして確認します。
+- Socket Frontへ近づけて再確認します。
 - アバターをリロードして確認します。
 - `Show Gizmo`をONにして検知範囲と向きを確認します。
 
@@ -37,7 +37,6 @@ Socketを約3秒間再検出できなかった可能性があります。
 - アバタースケールの違い
 - 多数のContactの重なり
 - 通信状態またはフレームレート
-- Nearest Lockによる検知範囲の縮小
 - 相手側でSocketが無効化された
 
 ## ProductAdapterで商品が動かない

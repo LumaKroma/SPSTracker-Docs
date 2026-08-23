@@ -18,7 +18,7 @@ SPSTrackerは、原則として1つのアバターに1つだけ配置し、そ�
 - Constraint、Animator Layer、メニュー構成の重複を減らす
 - 複数の対応商品で追従状態と操作方法を共通化する
 
-SPSTrackerは基本構成だけで6個、Nearest Lock使用時には7個のContact Receiverを使用します。対応商品が追従機構を独自に内包し、アイテムごとに同様のContactを追加すると、アバター内のContact数が増加します。多数のContactの重なりや処理負荷によって、検出精度、追従の安定性、リアルタイムでの動作に問題が出る可能性があります。
+SPSTrackerは通常の6 Receiver構成です。対応商品が追従機構を独自に内包し、アイテムごとに同様のContactを追加すると、アバター内のContact数が増加します。多数のContactの重なりや処理負荷によって、検出精度、追従の安定性、リアルタイムでの動作に問題が出る可能性があります。
 
 独自実装を禁止するものではありませんが、対応商品では公開Anchorと`TrackingStart`を利用し、1つのSPSTrackerを共有する構成を推奨します。制作上必要な状態値や切り替え機能が公開APIにない場合は、[機能リクエスト](../README.md#機能リクエスト)をお寄せください。
 
@@ -48,27 +48,8 @@ SPSTracker/API/TrackedAnchor
 
 詳細は[公開API・パラメータ](public-api.md)を参照してください。
 
-## Nearest Lock
+## 構成と負荷
 
-Nearest Lockは、同じ検知範囲に複数のSocketがある場合に、追従成立後の検知範囲を対象付近へ絞るオプションです。
+SPSTrackerは通常の6 Receiver構成です。ProductAdapter Menu Variantは商品ごとに同期Bool 3個（3 bit）を追加し、Modular Avatarが最終Parameter名をインスタンスごとにリマップします。
 
-対象Socketを識別するIDを取得する機能ではないため、目的のSocketを常に保証するものではありません。また、コントローラー移動などでSocketが大きく動く場合は追従が外れやすくなることがあります。
-
-## パフォーマンス目安
-
-SPSTracker v1.2.0の基本構成は次のとおりです。
-
-| 項目 | 目安 |
-| --- | ---: |
-| Contact Receiver | 6（Nearest Lock有効時は7） |
-| VRChat Constraint | 11 |
-| Animator Layer | 6 |
-| Expressions Parameter | 4個・11 bit |
-
-メニューなしProductAdapter 1個につき、VRC Parent Constraint 1個と収録FX Layer 2個が追加され、Contact、Expressions Parameter、描画ポリゴンは追加されません。
-
-メニュー付きVariantは同期Bool Parameterを3個（3 bit）追加します。`Item Visible` / `Tracking` / `World Fixed`はProductAdapterごとに独立し、Modular Avatarが各インスタンスの最終Parameter名を自動リネームします。
-
-NDMF後はModular AvatarがMMD互換やObject Toggle用の補助Layerも追加します。Unity 2022.3.22f1 / Modular Avatar 1.18.1の空Avatar比較では、Base ProductAdapterがFX Layer `+4`、Menu Variantが`+7`でした。この値は生成補助Layerを含む参考値であり、Avatar構成やModular Avatarのバージョンによって変わります。
-
-独立動作のRoll Deformationは、コンポーネントごとに3 vertices / 1 triangleのResolver用MeshRendererを1個生成します。また、独立動作するRoll Deformation全体で共有するFX Animator Layerを2個と、Expressions Parametersへ登録されない内部Animator Parameterを4個生成します。Runtime Offsetを使用する場合は、異なるParameter名ごとにFX Animator Layerが1個追加されます。SPS Plugと同じRendererへ適用する場合は、Plug側のResolverを共有するため独立Resolverは生成されません。
+最終的なAnimator Layer数、Constraint数、Contact数、Expressions Parameter使用量、描画負荷は、導入先アバター、依存パッケージ、NDMFの生成結果、使用する任意機能で変わります。固定の性能値は公開互換契約に含めません。導入後のBuild結果を確認してください。
