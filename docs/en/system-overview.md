@@ -30,7 +30,7 @@ When SPSTracker detects an enabled SPS Socket, the core system tracks the Socket
 - The held-state detection range can be tuned with `HeldRange` inside the FX Animator. After tracking starts, the detection range is adjusted automatically so it does not become smaller than the held range.
 - SPSTracker compensates for effective Gain differences caused by the detection range, keeping the tracking response relatively consistent as the range changes.
 - If the Socket is lost, SPSTracker holds the last position and rotation for approximately 3 seconds. During that period, it expands the recovery range progressively to its maximum over approximately 1 second.
-- If the Socket is detected again during the grace period, tracking continues and the detection range returns gradually to its normal value. Otherwise, the item returns to its held position after approximately 3 seconds.
+- If the Socket is detected again during the grace period, tracking continues. After holding for up to approximately 0.25 seconds, the detection range returns to normal over approximately 1 second. Otherwise, the item returns to its held position after approximately 3 seconds. These are typical timings and can vary with the avatar, Socket, and network conditions.
 
 Compatible items can read the tracking state from `LumaKroma/ST/TrackingStart`. See [Public API and Parameters](public-api.md) for details.
 
