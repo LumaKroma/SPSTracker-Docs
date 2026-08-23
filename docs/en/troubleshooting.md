@@ -31,7 +31,7 @@ Confirm that the item's local `+Z` direction is configured as its forward direct
 
 SPSTracker may have been unable to detect the Socket again for approximately 3 seconds.
 
-After tracking is lost, SPSTracker expands the detection range to its maximum over approximately 1 second while attempting to reacquire the Socket. If reacquisition succeeds, it holds for up to approximately 0.25 seconds and then returns to the normal range over approximately 1 second. These are typical timings and can vary by environment.
+After tracking is lost, SPSTracker expands the detection range to its maximum over approximately 1 second while attempting to reacquire the Socket. If reacquisition succeeds, it briefly holds and then returns to the normal range over approximately 1 second. These are typical timings and can vary by environment.
 
 - Rapid Socket movement
 - Different avatar scales
