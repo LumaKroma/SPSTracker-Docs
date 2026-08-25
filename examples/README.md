@@ -7,7 +7,7 @@
 ## 収録予定
 
 - 公開Anchorへ接続する最小構成例
-- `LumaKroma/ST/TrackingStart`と`TrackingEnabled`を使用した状態切り替え例
+- `LumaKroma/ST/TrackingStart`とアドオン自身のスコープ内Boolを使用した状態切り替え例
 - ProductAdapterの改変例
 - Roll Deformationの最小設定例
 

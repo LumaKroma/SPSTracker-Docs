@@ -1,95 +1,119 @@
 # ProductAdapter
 
-[日本語](../product-adapter.md) | English
+English | [日本語](../product-adapter.md)
 
-ProductAdapter is a Prefab for adding SPSTracker tracking support to an existing Modular Avatar-compatible product.
+ProductAdapter adds SPSTracker tracking to an existing Modular Avatar-compatible product. Like SPSTracker itself, it targets VRChat on Windows PC.
 
 ## Included Prefabs
 
-### SPSTracker_ProductAdapter.prefab
+Place only one Prefab that matches the product's use case.
 
-Includes a VRC Parent Constraint, an Animator that switches between Held and Tracked states, and ProductAdapter Setup Assistant. It does not include a menu control.
+### `SPSTracker_ProductAdapter.prefab`
 
-### SPSTracker_TrackingMenuItem.prefab
+The menu-free base configuration includes:
 
-Adds only the `Tracking` control to an existing product submenu.
+- one VRC Parent Constraint
+- the legacy Held / Tracked tracking Animator
+- a separate internal World Fixed Animator
+- ProductAdapter Setup Assistant
+- no added Expression Menu control or Expression Parameter
 
-When OFF, the product remains at Held Pose. When ON, automatic tracking is allowed when `TrackingStart` is detected. Multiple ProductAdapters share the same `LumaKroma/ST/TrackingEnabled` value.
+### `SPSTracker_ProductAdapterMenu.prefab`
+
+This is a Prefab Variant of the base. Its `Product Adapter` submenu contains:
+
+| Control | Default | Behavior |
+| --- | --- | --- |
+| `Item Visible` | OFF | Toggles the assigned product root |
+| `Tracking` | ON | Allows switching to Tracked Pose |
+| `World Fixed` | OFF | Freezes the `Tracking Driver` VRC Parent Constraint in world space |
+
+All three controls are synced and not saved. Modular Avatar automatically renames their internal parameters per ProductAdapter instance, so multiple products can be controlled independently.
 
 ## Basic Setup
 
-1. Add SPSTracker and the target product to the avatar by following their normal installation instructions.
-2. Place `SPSTracker_ProductAdapter.prefab` directly under the avatar root.
-3. In `ProductAdapter Setup Assistant` on the Prefab root, assign a Transform that moves the complete product to `Product Root`.
-4. Run `Initialize / Repair Setup`.
-5. Click `Edit Held Pose` and adjust the position and rotation used while tracking is inactive.
-6. Click `Copy Held Pose to Tracked`, then click `Edit Tracked Pose`.
-7. Align the product's tracking origin with the base of the cyan guide and its forward direction with local `+Z`.
-8. If needed, enable `Auto Configure Roll`. See [Roll Deformation](roll-deformation.md) for details.
-9. Run `Complete Setup and Return to Held`, then resolve any errors reported by Inspector validation.
+1. Install SPSTracker and the product normally.
+2. Place one appropriate ProductAdapter Prefab directly under the avatar root.
+3. In `ProductAdapter Setup Assistant`, assign a Transform that moves the complete product to `Product Root`.
+4. Click `Initialize / Repair Setup`.
+5. Use `Edit Held Pose` to set the non-tracked position and rotation.
+6. Click `Copy Held to Tracked`, then open `Edit Tracked Pose`.
+7. Place the tracking origin at the cyan guide root and face the product toward local `+Z`.
+8. Enable `Auto Configure Roll` when needed. See [Roll Deformation](roll-deformation.md).
+9. Click `Complete Setup and Return to Held`, then resolve every Inspector error.
 
-Setup Assistant uses the system language by default. Select Japanese or English from `Language` at the top of the Inspector.
+> [!IMPORTANT]
+> If Play / Build starts while the assistant still reports `Editing Held pose` or `Editing Tracked pose`, NDMF stops the build as an incomplete ProductAdapter setup. Always complete the setup and return to Held first.
 
-Do not edit the following reference Transforms:
+Do not directly edit these reference Transforms:
 
 ```text
 Held API Anchor (DO NOT EDIT)
 Tracked API Anchor (DO NOT EDIT)
 ```
 
-Normally, select each `Pose (EDIT)` Transform through the Setup Assistant buttons. You do not need to edit Constraint Source weights directly.
+## Configuring the Menu Variant
+
+Assign the product root that should be shown or hidden to the MA Object Toggle at `Menu/Product Adapter/Item Visible`.
+
+To install into an existing menu, set `Install Target Menu` on the MA Menu Installer at `Menu/Product Adapter`. Leave it empty to install a `Product Adapter` submenu into the avatar root menu.
+
+Menu labels, icons, the MA Object Toggle target, and Install Target Menu may be changed. Keep the `Menu` hierarchy under its ProductAdapter and do not rename internal parameters. Moving the hierarchy outside the instance or renaming parameters removes them from the per-instance remap contract.
 
 ## Behavior
 
-ProductAdapter switches from Held Pose to Tracked Pose only while both `LumaKroma/ST/TrackingStart` and `LumaKroma/ST/TrackingEnabled` are ON. If the Socket is lost, it keeps Tracked Pose for approximately 3 seconds while SPSTracker expands the recovery range over approximately 1 second. Tracking continues if the Socket is detected again; otherwise, ProductAdapter returns to Held Pose.
+ProductAdapter reads the public, read-only SPSTracker state `LumaKroma/ST/TrackingStart`.
 
-The Animator default for `TrackingEnabled` is ON. A product that does not need a menu control can omit `SPSTracker_TrackingMenuItem.prefab` and continue to track automatically.
+- Base Prefab: the Animator default for `TrackingEnabled` is ON, so it switches automatically when tracking starts.
+- Menu Variant: it switches to Tracked Pose only while `Tracking` is ON and `TrackingStart` is active.
+- `World Fixed`: freezes the ProductAdapter `Tracking Driver` at its current world position and rotation. It can conflict with another Constraint or Animator that controls the same Transform.
 
-## Using Multiple Items
+After losing the Socket, ProductAdapter keeps Tracked Pose for about three seconds. It continues tracking if the Socket is found again and otherwise returns to Held Pose.
 
-Multiple ProductAdapters can share the same tracking state and public Anchors provided by one SPSTracker. You do not need to add another SPSTracker for each item.
+## Multiple Items
 
-If multiple Targets are visible at the same time, they all track the same Socket simultaneously. Normally, use each product's Object Toggle or selection menu to choose which item is visible and active.
+Multiple ProductAdapters share one SPSTracker's `HeldAnchor`, `TrackedAnchor`, and `TrackingStart`. Do not add a full SPSTracker per item.
 
-ProductAdapter itself does not add Contact Receivers or Expressions Parameters, so compatible items can be added while continuing to share the same SPSTracker. The optional Tracking Menu Item adds one shared synchronized Bool Parameter.
+The Menu Variant's three internal parameters are isolated per instance. When multiple targets are visible, all of them follow the same Socket, so normally use `Item Visible` or the product's own selection controls to show only the active product.
 
-## Choosing the Target Transform
+## In-place Upgrade from v1.1
 
-Assign a movable root that contains every child object that should follow the tracking movement, not just the product's Mesh.
+Importing v1.2 over the v1.1 unitypackage does not make UnityPackage delete the retired `SPSTracker_TrackingMenuItem.prefab`.
 
-Conflicts may occur if another Constraint, Animator, or PhysBone directly controls the same Transform. If necessary, create a dedicated root GameObject that groups the movable parts of the product.
+1. Back up the avatar.
+2. Remove old `SPSTracker_TrackingMenuItem` instances from the Hierarchy.
+3. Delete the old Prefab that remains in the Project.
+4. For products that need controls, replace the ProductAdapter with `SPSTracker_ProductAdapterMenu.prefab` and configure Setup Assistant again.
+5. Use the Base Prefab when no menu is needed.
 
-## Combining with Hand Switching or World Lock
+Do not use the old Tracking Menu Item together with the new Menu Variant.
 
-The standard ProductAdapter continues to control the Target Transform from Held Pose while tracking is inactive. As a result, the following features are not preserved automatically when they control the same Transform:
+## Target Transform and Existing Features
 
-- Switching between left and right hands
-- World Lock
-- Switching between attachment positions
-- Animations that change the pickup position
-- Product-specific Parent Constraints or Position Constraints
+Assign a movable root that contains the Mesh and every child object that should track. Another Constraint, Animator, or PhysBone controlling the same Transform can cause offsets or vibration.
 
-To preserve these features, a product-specific Animator setup is required: the product controls the Transform while tracking is inactive, and ProductAdapter controls it only while `TrackingStart = 1`. Placing the Prefab alone is not sufficient.
+The Menu Variant's World Fixed control freezes only ProductAdapter's own Constraint. It does not automatically integrate a product's hand switching, attachment switching, Pickup animations, or other position controls. Add a dedicated movable root when necessary.
 
-## Additional Cost
+## Added Cost
 
-Estimated cost per ProductAdapter:
+The stable product-authored cost is:
 
-- Contact Receiver: none
-- Expressions Parameter: none
-- Rendered polygons: none
-- VRC Parent Constraint: 1
-- Animator Layer: 1
+| Configuration | Contacts | Expression Parameters | Rendering | VRC Parent Constraints | Included FX Layers |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Base Prefab | 0 | 0 | 0 | 1 | 2 |
+| Menu Variant | 0 | 3 Bool / 3 bits | 0 | 1 | Base 2 + MA Object Toggle generation |
 
-The optional `SPSTracker_TrackingMenuItem.prefab` adds one synchronized Bool Parameter (1 bit). See [Roll Deformation](roll-deformation.md) for its additional cost.
+After NDMF, Modular Avatar adds helper layers for MMD compatibility and Object Toggle processing. In a blank-avatar comparison using Unity 2022.3.22f1 and Modular Avatar 1.18.1, the Base added `+4` FX Layers and the Menu Variant added `+7`. These measured totals include generated helper layers, can vary with Modular Avatar and avatar configuration, and are not a fixed public API contract.
 
-## Including ProductAdapter with a Product
+See [Roll Deformation](roll-deformation.md) for its additional cost.
 
-Only files in the `ProductAdapter` folder included with the product are covered by the MIT License.
+## Bundling and Redistribution
+
+Only files in the product's `ProductAdapter` folder for which LumaKroma holds the rights are covered by the MIT License.
 
 - Keep the copyright notice and full MIT License text.
-- A modified ProductAdapter may be included with a product.
-- SPSTracker itself and LumaToys may not be included or redistributed.
-- Clearly state in the product description that users must install SPSTracker separately.
+- A modified ProductAdapter may be bundled with a product.
+- The SPSTracker core and LumaToys may not be bundled or redistributed.
+- State in the product description that the user must separately install SPSTracker for Windows PC.
 
-Always review the `LICENSE.md` included with the actual files you intend to redistribute.
+Always check the `LICENSE.md` included with the actual files being distributed.

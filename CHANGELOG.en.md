@@ -2,6 +2,22 @@
 
 [日本語](CHANGELOG.md) | English
 
+## v1.2.0 - 2026-08-24
+
+- Added `SPSTracker_ProductAdapterMenu.prefab`, combining `Item Visible`, `Tracking`, and `World Fixed` in one submenu
+- Scoped and automatically renamed internal parameters per menu-enabled ProductAdapter so multiple products can be controlled independently
+- Kept the menu-free `SPSTracker_ProductAdapter.prefab` free of added Expression Menu controls and Expression Parameters
+- Added World Fixed as a separate internal driver isolated from the legacy tracking Animator
+- Documented the NDMF build stop when ProductAdapter Setup Assistant is not completed before Play / Build
+- Removed `SPSTracker_TrackingMenuItem.prefab`; an in-place upgrade from v1.1 does not automatically delete the old Prefab, so it must be removed and replaced manually
+- Made Roll Deformation safely skip invalid or unresolved socket frames without changing positions, normals, or tangents
+- Clarified that SPSTracker and dependent ProductAdapters target Windows PC only
+- Improved Write Defaults compatibility for SPSTracker and LumaToys
+- Corrected progressive recovery after tracking loss and safe return after reacquiring
+- Corrected standalone LumaToys Satisfyer audio behavior
+- Removed Nearest Lock and `LumaKroma/ST/NearestMode`
+- Updated the supported minimum to VRChat SDK - Base / Avatars 3.10.4
+
 ## v1.1.0 - 2026-08-12
 
 - Documented ProductAdapter Setup Assistant initialization, Held / Tracked pose editing, and validation

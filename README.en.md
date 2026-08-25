@@ -17,6 +17,9 @@ SPSTracker itself is not included in this repository. Users must obtain it separ
 > [!IMPORTANT]
 > SPSTracker is designed so that one SPSTracker on an avatar can be shared by multiple compatible items, with the active item selected through the product's display or selection menu. Adding a separate tracking system for every item is not recommended. See [Designing for Multiple Items to Share One Tracker](docs/en/system-overview.md#designing-for-multiple-items-to-share-one-tracker) for details.
 
+> [!NOTE]
+> SPSTracker and ProductAdapter target VRChat on Windows PC. Android / Quest avatars are not supported.
+
 For end-user installation instructions, see the [illustrated installation guide (Japanese)](https://docs.google.com/document/d/1uJOBLdxwRoDBxQUnmw-w6q-cMbQ8GVmhe8odOjaHqkc/edit?tab=t.0#heading=h.24aznar30yba).
 
 ## Documentation
@@ -32,10 +35,10 @@ For end-user installation instructions, see the [illustrated installation guide 
 
 ## Supported Versions
 
-This documentation is based on SPSTracker `v1.1.0`.
+This documentation is based on SPSTracker `v1.2.0`.
 
 - Unity 2022.3.22f1
-- VRChat SDK - Avatars
+- VRChat SDK - Base / Avatars 3.10.4 or newer
 - Modular Avatar
 - VRChat Constraints
 - VRCFury 1.1403.0 or newer (when using Roll Deformation)

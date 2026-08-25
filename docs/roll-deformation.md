@@ -86,5 +86,6 @@ Roll DeformationはAnimator ParameterとBlend Treeを生成しますが、Expres
 - Roll ResolverとSPSTracker本体はSocketを個別に解決します。複数のSocketが近接している場合、位置追従とRoll追従が異なるSocketを選ぶ可能性があります。
 - Socket Upはランタイム中は安定しますが、Socket制作者が意図した向きへ設定しているとは限りません。
 - 剛体回転後は法線も回転するため、ワールド方向へ依存するライティングやMatCapの見え方は変化する場合があります。
+- Socket frameの位置または軸がゼロ、NaN、Infinity、退化状態などで解決できない場合、そのframeは頂点・法線・接線を変更せず安全にスキップします。設定不備を自動修復する機能ではないため、継続して発生する場合はResolverとRoll Axisを確認してください。
 
 症状別の確認項目は[トラブルシューティング](troubleshooting.md)を参照してください。

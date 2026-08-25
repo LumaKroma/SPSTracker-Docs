@@ -4,6 +4,8 @@
 
 SPSTracker is a VRChat avatar gimmick that makes an item on your avatar track another player's VRCFury SPS Socket.
 
+SPSTracker and ProductAdapter target VRChat on Windows PC. They cannot be used on Android / Quest avatars.
+
 ## Designing for Multiple Items to Share One Tracker
 
 As a general rule, only one SPSTracker should be placed on an avatar. Its tracking result is designed to be shared by multiple compatible items. Each item references the same `HeldAnchor`, `TrackedAnchor`, and `TrackingStart`, while the product's display or selection menu determines which item is in use.
@@ -16,7 +18,7 @@ This design has the following goals:
 - Reduce duplicated Constraints, Animator Layers, and menu structures
 - Provide consistent tracking state and controls across compatible products
 
-SPSTracker uses 6 Contact Receivers in its basic configuration and 7 when Nearest Lock is enabled. If each compatible product includes its own tracking mechanism and adds a similar set of Contacts, the total number of Contacts on the avatar increases. Overlapping Contacts and additional processing load may reduce detection accuracy, tracking stability, or real-time responsiveness.
+SPSTracker uses its normal six-Receiver configuration. If each compatible product includes its own tracking mechanism and adds a similar set of Contacts, the total number of Contacts on the avatar increases. Overlapping Contacts and additional processing load may reduce detection accuracy, tracking stability, or real-time responsiveness.
 
 Custom implementations are not prohibited, but compatible products are encouraged to use the public Anchors and `TrackingStart` so that one SPSTracker can be shared. If the public API does not provide a state value or switching feature required by your project, submit a [feature request](../../README.en.md#feature-requests).
 
@@ -28,7 +30,7 @@ When SPSTracker detects an enabled SPS Socket, the core system tracks the Socket
 - The held-state detection range can be tuned with `HeldRange` inside the FX Animator. After tracking starts, the detection range is adjusted automatically so it does not become smaller than the held range.
 - SPSTracker compensates for effective Gain differences caused by the detection range, keeping the tracking response relatively consistent as the range changes.
 - If the Socket is lost, SPSTracker holds the last position and rotation for approximately 3 seconds. During that period, it expands the recovery range progressively to its maximum over approximately 1 second.
-- If the Socket is detected again during the grace period, tracking continues and the detection range returns gradually to its normal value. Otherwise, the item returns to its held position after approximately 3 seconds.
+- If the Socket is detected again during the grace period, tracking continues. After a short hold, the detection range returns to normal over approximately 1 second. Otherwise, the item returns to its held position after approximately 3 seconds. These are typical timings and can vary with the avatar, Socket, and network conditions.
 
 Compatible items can read the tracking state from `LumaKroma/ST/TrackingStart`. See [Public API and Parameters](public-api.md) for details.
 
@@ -46,25 +48,8 @@ SPSTracker/API/TrackedAnchor
 
 See [Public API and Parameters](public-api.md) for details.
 
-## Nearest Lock
+## Composition and Cost
 
-Nearest Lock narrows the detection range around the current target after tracking begins, reducing target conflicts when multiple Sockets are within the same detection range.
+SPSTracker uses its normal six-Receiver configuration. The ProductAdapter Menu Variant adds three synchronized Bool parameters (3 bits) per product, with Modular Avatar remapping final parameter names per instance.
 
-It does not obtain a unique identifier for the target Socket and therefore cannot guarantee that a specific Socket will always be selected. Tracking may also be lost more easily when the Socket moves significantly, such as during large controller movements.
-
-## Performance Estimates
-
-The basic configuration of SPSTracker v1.1.0 has the following estimated cost:
-
-| Item | Estimate |
-| --- | ---: |
-| Contact Receiver | 6 (7 with Nearest Lock enabled) |
-| VRChat Constraint | 11 |
-| Animator Layer | 6 |
-| Expressions Parameter | 4 parameters, 11 bits |
-
-Each ProductAdapter adds one VRC Parent Constraint and one Animator Layer. ProductAdapter itself does not add Contacts, Expressions Parameters, or rendered polygons.
-
-The optional `SPSTracker_TrackingMenuItem.prefab` adds one synchronized Bool Parameter (1 bit). Multiple ProductAdapters can share this parameter.
-
-Independent Roll Deformation generates one resolver MeshRenderer with 3 vertices and 1 triangle per component. It also generates two FX Animator Layers and four internal Animator Parameters shared by all independent Roll Deformation components on the avatar. These internal parameters are not registered in Expressions Parameters. Runtime Offset adds one FX Animator Layer for each unique parameter name. When Roll Deformation targets the same Renderer as an SPS Plug, it shares the Plug resolver and does not generate an independent resolver for that Renderer.
+Final Animator Layers, Constraints, Contacts, Expressions Parameter usage, and rendering cost vary with the target avatar, dependency packages, NDMF output, and optional features. Fixed performance values are not part of the public compatibility contract; inspect the Build result after installation.

@@ -2,94 +2,118 @@
 
 日本語 | [English](en/product-adapter.md)
 
-ProductAdapterは、既存のModular Avatar対応商品へSPSTrackerの追従機能を追加するためのPrefabです。
+ProductAdapterは、既存のModular Avatar対応商品へSPSTrackerの追従機能を追加するPrefabです。SPSTracker本体と同様、Windows PC版VRChat向けです。
 
 ## 収録Prefab
 
-### SPSTracker_ProductAdapter.prefab
+同じ商品には、用途に合うどちらか一方だけを配置します。
 
-VRC Parent Constraint、Held / Tracked状態を切り替えるAnimator、ProductAdapter Setup Assistantを含む構成です。メニュー項目は含みません。
+### `SPSTracker_ProductAdapter.prefab`
 
-### SPSTracker_TrackingMenuItem.prefab
+メニューなしの基本構成です。
 
-既存商品のサブメニューへ`Tracking`操作項目だけを追加するPrefabです。
+- VRC Parent Constraint 1個
+- Held / Trackedを切り替える追従Animator
+- World Fixed用の独立した内部Animator
+- ProductAdapter Setup Assistant
+- Expression Menu / Expression Parameterの追加なし
 
-OFFでは商品をHeld Poseへ固定し、ONでは`TrackingStart`検出時の自動追従を許可します。複数配置したProductAdapterは同じ`LumaKroma/ST/TrackingEnabled`を共有します。
+### `SPSTracker_ProductAdapterMenu.prefab`
+
+基本構成を継承したPrefab Variantです。`Product Adapter` SubMenuに次の項目を追加します。
+
+| 項目 | 既定値 | 動作 |
+| --- | --- | --- |
+| `Item Visible` | OFF | 指定した商品ルートの表示を切り替える |
+| `Tracking` | ON | Tracked Poseへの切り替えを許可する |
+| `World Fixed` | OFF | `Tracking Driver`のVRC Parent Constraintをワールド固定する |
+
+3項目はすべて同期ON・保存OFFです。内部ParameterはModular AvatarがProductAdapterインスタンスごとに自動リネームするため、複数商品を独立して操作できます。
 
 ## 基本設定
 
 1. SPSTrackerと対象商品を通常の手順でアバターへ導入します。
-2. `SPSTracker_ProductAdapter.prefab`をアバタールート直下へ配置します。
+2. 用途に合うProductAdapter Prefabを1つ、アバタールート直下へ配置します。
 3. Prefabルートの`ProductAdapter Setup Assistant`で、商品全体を動かせるTransformを`商品ルート`へ指定します。
 4. `初期設定・参照を修復`を実行します。
-5. `Held姿勢を編集`を押し、追従していないときの位置と回転を調整します。
-6. `Held姿勢をTrackedへコピー`を押してから`Tracked姿勢を編集`を押します。
-7. 商品の追従原点を水色のガイドの根元へ、正面をローカル`+Z`方向へ合わせます。
+5. `Held姿勢を編集`で、追従していないときの位置と回転を調整します。
+6. `Held姿勢をTrackedへコピー`を押してから`Tracked姿勢を編集`を開きます。
+7. 商品の追従原点を水色ガイドの根元へ、正面をローカル`+Z`へ合わせます。
 8. 必要なら`Rollを自動設定`をONにします。詳しくは[Roll Deformation](roll-deformation.md)を参照してください。
-9. `設定を完了してHeldへ戻す`を実行し、Inspectorの検証にエラーがないことを確認します。
+9. `設定を完了してHeldへ戻す`を実行し、Inspectorのエラーがないことを確認します。
 
-Setup Assistantの表示言語はシステム言語が初期値です。Inspector上部の`表示言語`から日本語または英語へ切り替えられます。
+> [!IMPORTANT]
+> `Held編集中`または`Tracked編集中`のままPlay / Buildすると、NDMFは設定未完了としてビルドを停止します。必ず`設定を完了してHeldへ戻す`を実行してください。
 
-次の基準Transformは編集しないでください。
+次の基準Transformは直接編集しないでください。
 
 ```text
 Held API Anchor (DO NOT EDIT)
 Tracked API Anchor (DO NOT EDIT)
 ```
 
-通常はSetup Assistantの編集ボタンから、それぞれの`Pose (EDIT)`を選択してください。Constraint SourceのWeightを直接変更する必要はありません。
+## メニュー付きVariantの設定
+
+`Menu/Product Adapter/Item Visible`のMA Object Toggleへ、表示を切り替える商品ルートを指定します。
+
+既存メニューへ追加する場合は、`Menu/Product Adapter`のMA Menu Installerで`Install Target Menu`を指定します。未指定ならAvatarのルートMenuへ`Product Adapter` SubMenuとして追加されます。
+
+メニュー表示名、アイコン、MA Object Toggle対象、Install Target Menuは変更できます。`Menu`階層はProductAdapterの子に残し、内部Parameter名は変更しないでください。階層を外へ移動したりParameter名を変更したりすると、インスタンスごとの自動リネーム契約から外れます。
 
 ## 動作
 
-ProductAdapterは`LumaKroma/ST/TrackingStart`と`LumaKroma/ST/TrackingEnabled`が両方ONのとき、Held PoseからTracked Poseへ切り替えます。Socketの検出を失った後も約3秒間はTracked Poseを維持し、その間はSPSTrackerが約1秒かけて再検知範囲を広げます。再検出できた場合は追従を継続し、できなかった場合はHeld Poseへ戻ります。
+ProductAdapterはSPSTrackerの読み取り専用状態`LumaKroma/ST/TrackingStart`を使用します。
 
-`TrackingEnabled`のAnimator初期値はONです。メニュー操作が不要な商品では`SPSTracker_TrackingMenuItem.prefab`を追加せず、そのまま自動追従を使用できます。
+- Base Prefab: `TrackingEnabled`のAnimator既定値はONで、Socket追従成立時に自動でTracked Poseへ切り替わります。
+- Menu Variant: `Tracking`がONで、かつ`TrackingStart`が成立したときだけTracked Poseへ切り替わります。
+- `World Fixed`: ProductAdapterの`Tracking Driver`を現在のワールド位置・回転へ固定します。商品側の別ConstraintやAnimatorが同じTransformを制御している場合は競合する可能性があります。
+
+Socketを失った後も約3秒はTracked Poseを維持します。待機中に再検出できた場合は追従を続け、できなかった場合はHeld Poseへ戻ります。
 
 ## 複数アイテムで使用する
 
-複数のProductAdapterは、1つのSPSTrackerが提供する同じ追従状態と公開Anchorを共有できます。アイテムごとにSPSTrackerを追加する必要はありません。
+複数のProductAdapterは、同じSPSTrackerの`HeldAnchor`、`TrackedAnchor`、`TrackingStart`を共有します。アイテムごとにSPSTrackerを追加する必要はありません。
 
-複数のTargetが同時に表示されている場合は、すべてが同じSocketへ同時に追従します。通常は各商品のObject Toggleや選択メニューを使用し、表示・使用するアイテムを切り替えてください。
+Menu Variantの3つの内部Parameterはインスタンスごとに分離されます。複数のTargetを同時に表示すると全Targetが同じSocketへ追従するため、通常は`Item Visible`などで使用中の商品だけを表示してください。
 
-ProductAdapter本体はContact ReceiverとExpressions Parameterを追加しないため、SPSTracker本体を共有したまま対応アイテムを増やせます。Tracking Menu Itemを使用する場合は、共有の同期Bool Parameterが1個追加されます。
+## v1.1からの上書き更新
 
-## Target Transformの選び方
+v1.1のunitypackageへv1.2を上書き導入しても、UnityPackageは廃止済みの`SPSTracker_TrackingMenuItem.prefab`を自動削除しません。
 
-商品のMeshだけではなく、追従させる子オブジェクトをすべて含む可動ルートを指定してください。
+1. アバターをバックアップします。
+2. Hierarchy上の旧`SPSTracker_TrackingMenuItem`を削除します。
+3. Project内に残った旧Prefabも削除します。
+4. メニューが必要な商品は`SPSTracker_ProductAdapterMenu.prefab`へ置き換え、Setup Assistantを再設定します。
+5. メニュー不要ならBase Prefabを使用します。
 
-同じTransformを別のConstraint、Animator、PhysBoneが直接制御している場合は競合する可能性があります。必要に応じて、商品の可動部分をまとめる専用ルートGameObjectを作成してください。
+旧Tracking Menu Itemと新Menu Variantを同時に使用しないでください。
 
-## 左右持ち替え・ワールド固定との併用
+## Target Transformと既存機能
 
-標準のProductAdapterは、追従していない間もHeld Poseを基準としてTarget Transformを制御します。そのため、同じTransformを制御する次の機能は自動的には引き継がれません。
+商品のMeshだけでなく、追従させる子オブジェクトをすべて含む可動ルートを指定してください。同じTransformを別のConstraint、Animator、PhysBoneが直接制御すると、位置ずれや振動が発生する可能性があります。
 
-- 左右持ち替え
-- ワールド固定
-- 装着位置の切り替え
-- Pickup位置を変更するAnimation
-- 商品独自のParent ConstraintまたはPosition Constraint
-
-既存機能を残す場合は、追従していない間は商品側、`TrackingStart = 1`の間だけProductAdapter側から制御する商品固有のAnimator構成が必要です。Prefabを配置するだけでは対応できません。
+Menu VariantのWorld FixedはProductAdapter自身のConstraintだけを固定します。既存商品の左右持ち替え、装着位置切り替え、Pickup Animationなどを自動的に統合するものではありません。必要に応じて専用の可動ルートを追加してください。
 
 ## 追加コスト
 
-ProductAdapter 1個あたりの目安です。
+安定した商品側の構成値は次のとおりです。
 
-- Contact Receiver: 追加なし
-- Expressions Parameter: 追加なし
-- 描画ポリゴン: 追加なし
-- VRC Parent Constraint: 1
-- Animator Layer: 1
+| 構成 | Contact | Expressions Parameter | 描画 | VRC Parent Constraint | 収録FX Layer |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Base Prefab | 0 | 0 | 0 | 1 | 2 |
+| Menu Variant | 0 | Bool 3個・3 bit | 0 | 1 | Base 2 + MA Object Toggle生成 |
 
-任意の`SPSTracker_TrackingMenuItem.prefab`を使用する場合は、同期Bool Parameterが1個（1 bit）追加されます。Roll Deformationの追加コストは[Roll Deformation](roll-deformation.md)を参照してください。
+NDMF後の最終Animatorには、Modular AvatarがMMD互換やObject Toggle用の補助Layerを追加します。Unity 2022.3.22f1 / Modular Avatar 1.18.1の空Avatar比較では、BaseがFX Layer `+4`、Menu Variantが`+7`でした。この実測値は補助Layerを含み、Modular AvatarのバージョンやAvatar構成で変化するため公開API上の固定値ではありません。
+
+Roll Deformationの追加コストは[Roll Deformation](roll-deformation.md)を参照してください。
 
 ## 商品への同梱・再配布
 
-商品に収録された`ProductAdapter`フォルダ内のファイルだけがMIT Licenseの対象です。
+商品に収録された`ProductAdapter`フォルダ内でLumaKromaが権利を持つファイルだけがMIT Licenseの対象です。
 
 - 著作権表示とMIT License全文を残してください。
 - 改変したProductAdapterを商品へ同梱できます。
 - SPSTracker本体およびLumaToysを同梱・再配布することはできません。
-- 利用者が別途SPSTrackerを導入する必要があることを商品説明へ明記してください。
+- 利用者がWindows PC版SPSTrackerを別途導入する必要があることを商品説明へ明記してください。
 
 実際に同梱するファイルへ付属する`LICENSE.md`を必ず確認してください。

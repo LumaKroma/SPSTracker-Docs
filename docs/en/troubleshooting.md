@@ -14,7 +14,7 @@
 - Turn `Activate` ON in the SPSTracker menu.
 - Confirm that a compatible SPS Socket is enabled on the other avatar.
 - Move the Socket Front inside the blue detection range shown by `Show Gizmo`.
-- Turn `Nearest Lock` OFF temporarily and test again.
+- Move close to Socket Front and test again.
 - Reload the avatar and test again.
 - Turn `Show Gizmo` ON and check the detection range and direction.
 
@@ -31,23 +31,32 @@ Confirm that the item's local `+Z` direction is configured as its forward direct
 
 SPSTracker may have been unable to detect the Socket again for approximately 3 seconds.
 
-After tracking is lost, SPSTracker expands the detection range to its maximum over approximately 1 second while attempting to reacquire the Socket. If reacquisition succeeds, tracking continues and the range returns gradually to its normal value.
+After tracking is lost, SPSTracker expands the detection range to its maximum over approximately 1 second while attempting to reacquire the Socket. If reacquisition succeeds, it briefly holds and then returns to the normal range over approximately 1 second. These are typical timings and can vary by environment.
 
 - Rapid Socket movement
 - Different avatar scales
 - Many overlapping Contacts
 - Network conditions or frame rate
-- Detection range reduction caused by Nearest Lock
 - The Socket was disabled on the other avatar
 
 ## The Product Does Not Move with ProductAdapter
 
 - Assign Product Root in `ProductAdapter Setup Assistant`, then run `Initialize / Repair Setup`.
-- If the `Tracking` menu was added, turn it ON.
-- ProductAdapter switches to Tracked Pose only while both `LumaKroma/ST/TrackingStart` and `LumaKroma/ST/TrackingEnabled` are ON.
+- When using the Menu Variant, turn `Tracking` ON.
+- The Base Prefab switches automatically when `TrackingStart` is active. The Menu Variant requires both active `TrackingStart` and `Tracking` ON.
 - Confirm that no other Constraint, Animator, or PhysBone controls the same Transform.
 - Confirm that `Held API Anchor (DO NOT EDIT)` and `Tracked API Anchor (DO NOT EDIT)` have not been edited.
 - Resolve warnings and errors shown by Setup Assistant validation.
+
+## Play / Build Stops with ProductAdapter
+
+- Click `Complete Setup and Return to Held` in Setup Assistant.
+- Confirm that neither `Editing Held pose` nor `Editing Tracked pose` remains displayed.
+- Repair the Product Root, Tracking Driver, and Held / Tracked Pose references.
+
+## Tracking Controls Are Duplicated After Upgrading from v1.1
+
+UnityPackage does not automatically delete the retired `SPSTracker_TrackingMenuItem.prefab`. Remove the old Prefab from both the Hierarchy and Project, then replace the ProductAdapter with `SPSTracker_ProductAdapterMenu.prefab` when controls are needed.
 
 ## Roll Tracking Does Not Work
 
@@ -79,6 +88,7 @@ The standard ProductAdapter controls the product from Held Pose even while track
 
 - If the existing feature is not required: disable the product's original position control and adjust Held Pose.
 - If the existing feature must be preserved: modify the product-specific Animator so the controlling system switches according to `LumaKroma/ST/TrackingStart`.
+- When using the Menu Variant's `World Fixed`: only ProductAdapter's `Tracking Driver` is frozen. Do not let another World Lock system control the same Transform simultaneously.
 
 ## Information to Include When Requesting Support
 

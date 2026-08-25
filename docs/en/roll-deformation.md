@@ -86,5 +86,6 @@ Roll Deformation generates the Animator Parameter and Blend Tree but does not ad
 - The Roll resolver and SPSTracker core resolve Sockets independently. When multiple Sockets are close together, position tracking and roll tracking may select different Sockets.
 - Socket Up is stable during runtime but may not have been configured to an intentional orientation by the Socket creator.
 - Normals rotate with the mesh, so lighting and MatCap effects that depend on world direction may look different after roll is applied.
+- If the Socket frame position or axes are zero, NaN, Infinity, degenerate, or otherwise unresolved, that frame is safely skipped without changing vertex positions, normals, or tangents. This does not repair invalid setup; check the Resolver and Roll Axis if it persists.
 
 See [Troubleshooting](troubleshooting.md) for symptom-based checks.
